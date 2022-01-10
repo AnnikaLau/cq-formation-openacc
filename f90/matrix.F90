@@ -26,16 +26,17 @@ module matrix_mod
   public :: allocate_3d_poisson_matrix, free_matrix
   public :: matvec
   contains
-  subroutine allocate_3d_poisson_matrix(a, n)
+  subroutine allocate_3d_poisson_matrix(a, n_in)
     implicit none
     type(matrix) :: a
     integer      :: n, num_rows, nnz, offsets(27), &
                     zstride, ystride, idx,         &
                     i, j, x, y, z
+    integer, intent(in) :: n_in
     real(8)      :: coefs(27)
     integer, pointer :: arow_offsets(:),acols(:)
     real(8), pointer :: acoefs(:)
-
+    n=n_in
     num_rows = (n+1)*(n+1)*(n+1)
     nnz = 27*num_rows
     a%num_rows = num_rows
