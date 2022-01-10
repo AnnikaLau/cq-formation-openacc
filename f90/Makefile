@@ -1,6 +1,11 @@
-FC=nvfortran
-FCFLAGS=-fast
-LDFLAGS=${FCFLAGS}
+FC=pgf90
+ifeq ($(TARGET),gpu)
+	FCFLAGS=-O3 -Mpreprocess -ta=nvidia -fast -Minfo=all,intensity,ccff
+	LDFLAGS=-ta=nvidia
+else
+	FCFLAGS=-O3 -Mpreprocess -mp
+	LDFLAGS=-mp
+endif
 
 cg.x: matrix.o vector.o main.o
 	${FC} -o $@ ${LDFLAGS} $^
